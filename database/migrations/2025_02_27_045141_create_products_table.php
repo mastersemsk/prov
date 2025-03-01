@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->references('id')->on('categories');
             $table->string('prod_name');
-            $table->tinyText('description');
+            $table->tinyText('description')->nullable();
             $table->float('price', 8, 2);
             $table->timestamps();
         });

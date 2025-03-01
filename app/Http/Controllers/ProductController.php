@@ -28,9 +28,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(): RedirectResponse
+    public function create(): View
     {
-        return redirect(route('prod_list'));
+
+        return view('products.create', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -45,7 +48,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'category_id' => 'required|numeric',
             'prod_name' => 'required|string|max:255',
-            'description' => 'nullable|max:255',
+            'description' => 'nullable|string|max:255',
             'price' => 'required|numeric'
         ]);
 
@@ -91,6 +94,15 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product): RedirectResponse
     {
+        //проверка
+        $validated = $request->validate([
+            'category_id' => 'required|numeric',
+            'prod_name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'price' => 'required|numeric'
+        ]);
+
+        $product->update($validated);
         return redirect(route('prod_list'));
     }
 

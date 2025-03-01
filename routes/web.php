@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Route::get('/products/list',[ProductController::class,'index'])->name('prod_list');
 Route::get('/products/create',[ProductController::class,'create'])->name('prod_create');
-Route::post('/products/create',[ProductController::class,'store'])->name('prod_store');
+Route::put('/products/create',[ProductController::class,'store'])->name('prod_store');
 Route::post('/products/edit/{id}',[ProductController::class,'edit'])->whereNumber('id')->name('prod_edit');
 Route::put('/products/edit',[ProductController::class,'update'])->name('prod_update');
 Route::get('/products/show/{id}',[ProductController::class,'show'])->whereNumber('id')->name('prod_show');

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Редактировать продукт {{ $products->prod_name }}</title>
+        <title>{{ $products->prod_name }}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -37,31 +37,13 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <form action="{{ route('prod_update') }}" method="post">
-                        @csrf
-                        @method('put')
-                        <p>Категория <select name="category_id">
-                        @foreach ($categories as $category)
-                            @if ($products->category_id == $category->id)
-                                <option value="{{ $category->id }}" selected>{{ $category->cat_name }}</option>
-                            @else
-                                <option value="{{ $category->id }}">{{ $category->cat_name }}</option>
-                            @endif
-                        @endforeach
-                        </select></p>
-                        <p>Название продукта <input name="prod_name" value="{{ $products->prod_name }}" required></p>
-                        <p>Опмсание <textarea rows="3" cols="20" name="description">{{ $products->description }}</textarea></p>
-                        <p>Цена <input name="price" value="{{ $products->price }}" required></p> 
-                    <p><input type="submit" value="Изменить"></p>
-                    </form>
-                    </div>
-                    <div class="alert alert-danger" role="alert">
-                        @foreach($errors->all() as $error)
-                        {{ $error }}<br/>
-                        @endforeach
-                    </div>
+                <div class="mt-8 overflow-hidden shadow sm:rounded-lg">
+                    
+                        <p>Категория: {{ $products->category->cat_name }}</p>
+                        <p>Название продукта: {{ $products->prod_name }}</p>
+                        <p>Опмсание: {{ $products->description }}</p>
+                        <p>Цена: {{ $products->price }}</p> 
+                    
                 </div>
 
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
