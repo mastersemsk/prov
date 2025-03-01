@@ -40,21 +40,27 @@
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">
                         <table>
+                            @if(count($products) > 0)
                             <tr><th>Название</th><th>цена</th><th>Категория</th></tr>
                             @foreach ($products as $product)
-                            <tr><td><a href="/products/edit/{{  $product->id }}" title="Изменить">{{  $product->prod_name }}</a></td><td>{{ $product->price }}</td><td>{{ $product->category->cat_name }}</td>
-                            <td><form method="POST" action="/products/destroy/{{  $product->id }}">
-                                            @csrf
-                                            @method('delete')
-                                            <a href="/products/destroy/{{  $product->id }}" onclick="event.preventDefault(); this.closest('form').submit();">
-                                                Удалить
-                                            </a>
-                                        </form>
-                                    </td></tr>
+                            <tr><td><a href="{{ route('prod_show',$product->id) }}" title="Показать">{{  $product->prod_name }}</a></td><td>{{ $product->price }}</td><td>{{ $product->category->cat_name }}</td>
+                            <td><form> @csrf 
+                                <button formmethod="post" formaction="{{ route('prod_edit',$product->id) }}">Изменить</button>
+                            </form>
+                            </td>
+                            <td><form method="post">
+                                @csrf
+                                @method('delete')
+                                <button formaction="{{ route('prod_remove',$product->id) }}">Удалить</button>
+                                </form>
+                            </td></tr>
                             @endforeach
+                            @else
+                            <tr><td>Товаров нет</td></tr>
+                            @endif
                         </table>
                     </div>
-                    <p><a href="/products/create">Создать</a></p>
+                    <p><a href="{{ route('prod_create') }}">Добавить</a></p>
                 </div>
 
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">

@@ -30,7 +30,7 @@ class ProductController extends Controller
      */
     public function create(): RedirectResponse
     {
-        return redirect('/products/list');
+        return redirect(route('prod_list'));
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductController extends Controller
         ]);
 
         Product::create($validated);
-        return redirect('/products/list');
+        return redirect(route('prod_list'));
     }
 
     /**
@@ -59,9 +59,11 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product): View
+    public function show(Product $product,$id): View
     {
-        //
+        return view('products.show', [
+            'products' => $product->find($id)
+        ]);
     }
 
     /**
@@ -89,7 +91,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product): RedirectResponse
     {
-        return redirect('/products/list');
+        return redirect(route('prod_list'));
     }
 
     /**
@@ -103,6 +105,6 @@ class ProductController extends Controller
         
         $product->destroy($id);
  
-        return redirect('/products/list');
+        return redirect(route('prod_list'));
     }
 }
