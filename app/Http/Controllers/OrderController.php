@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class OrderController extends Controller
 {
@@ -26,9 +27,11 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id): View
     {
-        //
+        return view('orders.create', [
+            'products' => Product::find($id)
+        ]);
     }
 
     /**
@@ -37,9 +40,21 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        //проверка
+        $validated = $request->validate([
+            'product_id' => 'required|numeric',
+            'fio' => 'required|string|max:255',
+            'comment' => 'nullable|string|max:255',
+            'price' => 'required|numeric',
+            'count' => 'required|numeric'
+        ]);
+        $validated['final_price'] = round(($validated['price'] * $validated['count']),2);
+        unset($validated['price'],$validated['count']);
+
+        Order::create($validated);
+        return redirect(route('order_list'));
     }
 
     /**
@@ -48,9 +63,11 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function show(Order $order)
+    public function show(Order $order,$id): View
     {
-        //
+        return view('orders.show', [
+            'order' => $order->find($id)
+        ]);
     }
 
     /**
@@ -71,9 +88,16 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, Order $order): RedirectResponse
     {
-        //
+        //проверка
+        $validated = $request->validate([
+            'id' => 'required|numeric',
+            'status' => 'required|string',
+        ]);
+
+        $order->where('id', $validated['id'])->update(['status' => $validated['status']]);
+        return redirect(route('order_show', $validated['id']));
     }
 
     /**
@@ -82,8 +106,24 @@ class OrderController extends Controller
      * @param  \App\Models\Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Order $order)
+    public function destroy(Order $order,$id): RedirectResponse
     {
-        //
+        $order->destroy($id);
+ 
+        return redirect(route('order_list'));
+    }
+
+    private function switch_status($status): string
+    {
+        switch($status) {
+            case 'new': 
+                $new_status = 'Новый';
+            break;
+            case 'done':
+                $new_status = 'Выполнен';
+            break;
+            default: $new_status = 'нет такого заказа'; break;
+        }
+        return $new_status;
     }
 }

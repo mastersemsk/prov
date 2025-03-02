@@ -39,14 +39,16 @@
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="mt-8>
                     <div class="grid grid-cols-1 md:grid-cols-2">
-                        <form action="" method="post">
+                        <form action="{{ route('order_store') }}" method="post">
                         @csrf
                         @method('put')
-                        <p>Товар:</p>
-                        <p>Цена:</p>
-                        <p>Ф.И.О. <input name="fio" required></p>
-                        <p>Коментарий <textarea rows="3" cols="10" name="comment"></textarea></p>
-                        <p>Количество <input name="count" value="1" required></p> 
+                        <p>Товар: {{ $products->prod_name }}</p>
+                        <p>Цена: {{ $products->price }}</p>
+                        <input type="hidden" name="product_id" value="{{ $products->id }}">
+                        <input type="hidden" name="price" value="{{ $products->price }}">
+                        <p>Ф.И.О.: <input name="fio" required></p>
+                        <p>Коментарий: <textarea rows="3" cols="10" name="comment"></textarea></p>
+                        <p>Количество: <input name="count" value="1" required></p> 
                     <p><input type="submit" value="Отправить"></p>
                     </form>
                     </div>

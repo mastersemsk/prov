@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,11 @@ Route::post('/products/edit/{id}',[ProductController::class,'edit'])->whereNumbe
 Route::put('/products/edit/{id}',[ProductController::class,'update'])->whereNumber('id')->name('prod_update');
 Route::get('/products/show/{id}',[ProductController::class,'show'])->whereNumber('id')->name('prod_show');
 Route::delete('/products/destroy/{id}', [ProductController::class, 'destroy'])->whereNumber('id')->name('prod_remove');
+
+Route::get('/orders/list',[OrderController::class,'index'])->name('order_list');
+Route::post('/orders/create/{id}',[OrderController::class,'create'])->whereNumber('id')->name('order_create');
+Route::put('/orders/create',[OrderController::class,'store'])->name('order_store');
+Route::post('/orders/show/',[OrderController::class,'update'])->name('order_update');
+Route::get('/orders/show/{id}',[OrderController::class,'show'])->whereNumber('id')->name('order_show');
+Route::delete('/orders/destroy/{id}', [OrderController::class, 'destroy'])->whereNumber('id')->name('order_remove');
+

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ $products->prod_name }}</title>
+        <title>Заказ №{{ $order->id }}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -38,16 +38,31 @@
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="mt-8 overflow-hidden shadow sm:rounded-lg">
-                    
-                        <p>Категория: {{ $products->category->cat_name }}</p>
-                        <p>Название продукта: {{ $products->prod_name }}</p>
-                        <p>Опмсание: {{ $products->description }}</p>
-                        <p>Цена: {{ $products->price }}</p> 
-                    
+                            @switch($order->status)
+                            @case('new')
+                                @php $status='Новый' @endphp
+                             @break
+                             @case('done')
+                                @php $status='Выполнен' @endphp
+                             @break
+                             @default
+                                @php $status='нет заказа' @endphp
+                             @endswitch
+                <p> Номер: {{ $order->id }}</p>
+                        <p>Название продукта: {{ $order->product->prod_name }}</p>
+                        <p>ФИО: {{ $order->fio }}</p> 
+                        <p>Коментарии: {{ $order->comment }}</p>
+                        <p>Статус: {{ $status }}</p> 
+                        <p>Сумма: {{ $order->final_price }}</p>          
                 </div>
                 <form method="post">
                     @csrf
-                    <button formaction="{{ route('order_create',$products->id) }}">Заказать</button></form>
+                    <input type="hidden" name="id" value="{{ $order->id }}">
+                    Статус заказа <select name="status" required>
+                    <option value="new">Новый</option>
+                    <option value="done">Выполнен</option>
+                    </select>
+                    <button formaction="{{ route('order_update') }}">Сохранить</button></form>
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
                         <div class="flex items-center">

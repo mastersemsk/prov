@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ $products->prod_name }}</title>
+        <title>Laravel</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -38,16 +38,39 @@
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="mt-8 overflow-hidden shadow sm:rounded-lg">
-                    
-                        <p>Категория: {{ $products->category->cat_name }}</p>
-                        <p>Название продукта: {{ $products->prod_name }}</p>
-                        <p>Опмсание: {{ $products->description }}</p>
-                        <p>Цена: {{ $products->price }}</p> 
-                    
+                        <table>
+                            @if(count($orders) > 0)
+                            <tr><th>id</th><th>Дата</th><th>ФИО</th><th>Статус</th><th>Сумма</th><td></td></tr>
+                            @foreach ($orders as $order)
+                            @switch($order->status)
+                            @case('new')
+                                @php $status='Новый' @endphp
+                             @break
+                             @case('done')
+                                @php $status='Выполнен' @endphp
+                             @break
+                             @default
+                                @php $status='нет заказа' @endphp
+                             @endswitch
+                            <tr><td><a href="{{ route('order_show',$order->id) }}" title="Показать">{{ $order->id }}</a></td>
+                            <td>{{  $order->created_at }}</td>
+                            <td>{{  $order->fio }}</td>
+                            
+                            <td>{{ $status }}</td>
+                            <td>{{ $order->final_price }}</td>
+                            <td><form method="post">
+                                @csrf
+                                @method('delete')
+                                <button formaction="{{ route('order_remove',$order->id) }}">Удалить</button>
+                                </form>
+                            </td></tr>
+                            @endforeach
+                            @else
+                            <tr><td>Заказов нет</td></tr>
+                            @endif
+                        </table>
                 </div>
-                <form method="post">
-                    @csrf
-                    <button formaction="{{ route('order_create',$products->id) }}">Заказать</button></form>
+
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
                         <div class="flex items-center">
