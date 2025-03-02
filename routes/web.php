@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/products/list',[ProductController::class,'index'])->name('prod_list');
+Route::get('/products',[ProductController::class,'index'])->name('prod_list');
 Route::get('/products/create',[ProductController::class,'create'])->name('prod_create');
 Route::put('/products/create',[ProductController::class,'store'])->name('prod_store');
 Route::post('/products/edit/{id}',[ProductController::class,'edit'])->whereNumber('id')->name('prod_edit');
@@ -27,7 +27,7 @@ Route::put('/products/edit/{id}',[ProductController::class,'update'])->whereNumb
 Route::get('/products/show/{id}',[ProductController::class,'show'])->whereNumber('id')->name('prod_show');
 Route::delete('/products/destroy/{id}', [ProductController::class, 'destroy'])->whereNumber('id')->name('prod_remove');
 
-Route::get('/orders/list',[OrderController::class,'index'])->name('order_list');
+Route::get('/orders',[OrderController::class,'index'])->name('order_list');
 Route::post('/orders/create/{id}',[OrderController::class,'create'])->whereNumber('id')->name('order_create');
 Route::put('/orders/create',[OrderController::class,'store'])->name('order_store');
 Route::post('/orders/show/',[OrderController::class,'update'])->name('order_update');

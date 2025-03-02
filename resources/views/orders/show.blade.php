@@ -37,6 +37,7 @@
             @endif
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+                <p><a href="{{ route('prod_list') }}">Список товаров</a></p><br>
                 <div class="mt-8 overflow-hidden shadow sm:rounded-lg">
                             @switch($order->status)
                             @case('new')

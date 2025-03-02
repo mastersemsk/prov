@@ -114,8 +114,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product,$id): RedirectResponse
     {
+        try {
+            $product->destroy($id);
+        }
+        catch (\Exception $e) {
+            die('Нельзя удалить, есть заказы. Сначала удалите заказ товара.');
+        }
         
-        $product->destroy($id);
  
         return redirect(route('prod_list'));
     }
