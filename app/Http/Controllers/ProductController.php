@@ -11,7 +11,7 @@ use Illuminate\Http\RedirectResponse;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Отобразить список продуктов.
      *
      * @return \Illuminate\Http\Response
      */
@@ -92,7 +92,7 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(Request $request, Product $product,$id): RedirectResponse
     {
         //проверка
         $validated = $request->validate([
@@ -102,7 +102,7 @@ class ProductController extends Controller
             'price' => 'required|numeric'
         ]);
 
-        $product->update($validated);
+        $product->where('id', $id)->update($validated);
         return redirect(route('prod_list'));
     }
 

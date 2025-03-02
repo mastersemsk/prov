@@ -3,22 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class OrderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Отобразить список заказов.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
-        //
+        return view('orders.list', [
+            'orders' => Order::with('product')->get()
+        ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Показать форму создания нового заказа.
      *
      * @return \Illuminate\Http\Response
      */
